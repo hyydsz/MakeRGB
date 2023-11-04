@@ -1,0 +1,164 @@
+﻿<Window x:Class="MakeRGB.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:rgb="clr-namespace:MakeRGB" AllowDrop="True" Drop="Window_Drop"
+        Title="MakeRGB" Height="600" Width="900">
+
+    <Window.Resources>
+        <BooleanToVisibilityConverter x:Key="BoolToVis"/>
+    </Window.Resources>
+
+    <Border>
+        <Border.Background>
+            <LinearGradientBrush StartPoint="0 0" EndPoint="1 1">
+                <GradientStop Offset="0" Color="#65b849" />
+                <GradientStop Offset="0.166" Color="#65b849" />
+                <GradientStop Offset="0.166" Color="#f7b423" />
+                <GradientStop Offset="0.3333" Color="#f7b423" />
+                <GradientStop Offset="0.3333" Color="#f58122" />
+                <GradientStop Offset="0.5" Color="#f58122" />
+                <GradientStop Offset="0.5" Color="#de3a3c" />
+                <GradientStop Offset="0.666" Color="#de3a3c" />
+                <GradientStop Offset="0.666" Color="#943f96" />
+                <GradientStop Offset="0.8633" Color="#943f96" />
+                <GradientStop Offset="0.8633" Color="#009fd9" />
+                <GradientStop Offset="1" Color="#009fd9" />
+            </LinearGradientBrush>
+        </Border.Background>
+
+        <Grid>
+            <Grid>
+                <Border Background="#9F9F9F" BorderThickness="1" BorderBrush="Black" Height="160" Width="160" CornerRadius="20"
+                        HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10 10">
+                    <Image x:Name="Png_Show" MouseLeftButtonDown="DownloadImage"/>
+
+                    <Border.Effect>
+                        <DropShadowEffect BlurRadius="30" ShadowDepth="0" Color="#999999"/>
+                    </Border.Effect>
+                </Border>
+            </Grid>
+
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="80"/>
+                    <RowDefinition Height="80"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="40"/>
+                </Grid.RowDefinitions>
+
+                <Grid Grid.Row="0">
+                    <TextBlock Text="设备信息：" FontSize="16" FontWeight="Bold" HorizontalAlignment="Center" Margin="0 10"/>
+
+                    <Grid Margin="15 0" HorizontalAlignment="Right" VerticalAlignment="Center">
+                        <StackPanel Orientation="Vertical">
+                            <ComboBox Style="{StaticResource WpfComboBoxStyle}" x:Name="SaveBox" Width="150" Height="25" SelectionChanged="SaveBox_SelectionChanged"/>
+                            <StackPanel Orientation="Horizontal">
+                                <Button Style="{StaticResource SmallButtonStyle}" Click="SaveToList" Margin="0 10 0 0" Width="70" Height="25" Content="存储"/>
+                                <Button Style="{StaticResource SmallButtonStyle}" Click="DeleteToList" Margin="10 10 0 0" Width="70" Height="25" Content="删除"/>
+                            </StackPanel>
+                        </StackPanel>
+                    </Grid>
+
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Bottom" Margin="0 10">
+                        <Grid>
+                            <TextBlock Text="设备名称" VerticalAlignment="Center" FontWeight="Bold" Foreground="#A0A0A0" IsHitTestVisible="False"
+       HorizontalAlignment="Left" Margin="15 0" Visibility="{Binding ElementName=Product_Name,Path=Text.IsEmpty, Converter={StaticResource BoolToVis}}" Panel.ZIndex="1"/>
+                            <TextBox x:Name="Product_Name" Style="{StaticResource TextboxStyle}" Margin="10 0">
+                                <TextBox.ToolTip>
+                                    <ToolTip Content="SignalRGB-设备的名称" Style="{StaticResource ToolTipStyle}"/>
+                                </TextBox.ToolTip>
+                            </TextBox>
+                        </Grid>
+
+                        <Grid>
+                            <TextBox x:Name="Display_Name" Style="{StaticResource TextboxStyle}" Margin="10 0">
+                                <TextBox.ToolTip>
+                                    <ToolTip Content="SignalRGB-显示的名称" Style="{StaticResource ToolTipStyle}"/>
+                                </TextBox.ToolTip>
+                            </TextBox>
+                            <TextBlock Text="显示名称" VerticalAlignment="Center" FontWeight="Bold" Foreground="#A0A0A0" IsHitTestVisible="False" 
+       HorizontalAlignment="Left" Margin="15 0" Visibility="{Binding ElementName=Display_Name,Path=Text.IsEmpty, Converter={StaticResource BoolToVis}}" Panel.ZIndex="1"/>
+                        </Grid>
+
+                        <Grid>
+                            <TextBox x:Name="Brand" Style="{StaticResource TextboxStyle}" Margin="10 0">
+                                <TextBox.ToolTip>
+                                    <ToolTip Content="SignalRGB-品牌" Style="{StaticResource ToolTipStyle}"/>
+                                </TextBox.ToolTip>
+                            </TextBox>
+                            <TextBlock Text="品牌" VerticalAlignment="Center" FontWeight="Bold" Foreground="#A0A0A0" IsHitTestVisible="False" 
+       HorizontalAlignment="Left" Margin="15 0" Visibility="{Binding ElementName=Brand,Path=Text.IsEmpty, Converter={StaticResource BoolToVis}}" Panel.ZIndex="1"/>
+                        </Grid>
+                    </StackPanel>
+                </Grid>
+
+                <Grid Grid.Row="1">
+                    <TextBlock Text="设备属性：" FontSize="16" FontWeight="Bold" HorizontalAlignment="Center" Margin="0 5"/>
+
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Bottom" Margin="0 15">
+                        <TextBlock Text="宽度: " VerticalAlignment="Bottom" FontSize="14" FontWeight="Bold"/>
+                        <rgb:NumericBox x:Name="Device_Width" Value="0" Maximum="100" Minimum="0" OnNumberChanged="OnDevicePropertyChange">
+                            <rgb:NumericBox.ToolTip>
+                                <ToolTip Content="设备在编辑界面的宽度" Style="{StaticResource ToolTipStyle}"/>
+                            </rgb:NumericBox.ToolTip>
+                        </rgb:NumericBox>
+
+                        <TextBlock Text="高度: " VerticalAlignment="Bottom" FontSize="14" FontWeight="Bold" Margin="10 0 0 0"/>
+                        <rgb:NumericBox x:Name="Device_Height" Value="0" Maximum="100" Minimum="0" OnNumberChanged="OnDevicePropertyChange">
+                            <rgb:NumericBox.ToolTip>
+                                <ToolTip Content="设备在编辑界面的高度" Style="{StaticResource ToolTipStyle}"/>
+                            </rgb:NumericBox.ToolTip>
+                        </rgb:NumericBox>
+
+                        <TextBlock x:Name="LED_Count" Text="灯珠: 0个" Foreground="Black" VerticalAlignment="Bottom" FontSize="18" FontWeight="Bold" Margin="20 0 0 0"/>
+                    </StackPanel>
+                </Grid>
+
+                <Grid Grid.Row="2">
+                    <TextBlock Text="设备灯珠：" FontSize="16" FontWeight="Bold" HorizontalAlignment="Center" Margin="0 5"/>
+
+                    <Grid HorizontalAlignment="Right" VerticalAlignment="Top" Margin="10 0">
+                        <StackPanel Orientation="Vertical" Cursor="Hand">
+                            <Slider Style="{DynamicResource SliderStyle1}" x:Name="ScaleSlider" Width="200" Height="25" Maximum="100" Minimum="50" Value="100" ValueChanged="ScaleChanged"/>
+                        </StackPanel>
+                    </Grid>
+
+                    <Border Margin="10 30 10 5" BorderThickness="2" BorderBrush="White" CornerRadius="10">
+                        <RichTextBox x:Name="Rich_Box" Style="{DynamicResource RichTextBoxStyle1}" IsReadOnly="True" IsDocumentEnabled="True"
+                            Background="Transparent" Cursor="Arrow" SelectionTextBrush="Transparent" SelectionBrush="Transparent"
+                            HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto" BorderBrush="Transparent" Margin="5"/>
+
+                        <Border.Effect>
+                            <DropShadowEffect BlurRadius="20" ShadowDepth="5" Color="Gray"/>
+                        </Border.Effect>
+                    </Border>
+                </Grid>
+
+
+                <Grid Grid.Row="3">
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="10 0">
+                        <TextBlock>
+                            <Hyperlink NavigateUri="https://github.com/hyydsz/MakeRGB" Foreground="Black" FontWeight="Normal" FontSize="18" FontStyle="Italic" RequestNavigate="Hyperlink_RequestNavigate">Github</Hyperlink>
+                        </TextBlock>
+
+                        <TextBlock Margin="10 0">
+                            <Hyperlink NavigateUri="donate" Foreground="Black" FontWeight="Normal" FontSize="18" FontStyle="Italic" RequestNavigate="Hyperlink_RequestNavigate">赞助</Hyperlink>
+                        </TextBlock>
+                    </StackPanel>
+
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="0 3">
+                        <Button Style="{StaticResource ButtonStyle}" Width="90" Height="30" Click="OpenButtonClick" 
+VerticalAlignment="Top" Margin="10 0" Content="打开"/>
+
+                        <Button Style="{StaticResource ButtonStyle}" Width="90" Height="30" Click="ClearAll" 
+VerticalAlignment="Top" Margin="10 0" Content="重置"/>
+
+                        <Button Style="{StaticResource ButtonStyle}" Width="90" Height="30" Click="Generate"
+VerticalAlignment="Top" Margin="10 0" Content="生成"/>
+                    </StackPanel>
+                </Grid>
+            </Grid>
+        </Grid>
+    </Border>
+
+</Window>

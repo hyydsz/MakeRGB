@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>MakeRGB</title>
+        <meta content="charset=utf-8"/>
+        <link rel="stylesheet" href="./index.css"/>
+    </head>
+    
+    <body>
+        <div>
+            <div>
+                <h2>MakeRGB</h2>
+            </div>
+
+            <div class="input_container">
+                <div class="column">
+                    <div class="input_data">
+                        <input id="input_device_name" type="text" required/>
+                        <div class="underline"></div>
+                        <label>设备名称</label>
+                    </div>
+                    
+                    <div class="input_data">
+                        <input id="input_device_display_name" type="text" required/>
+                        <div class="underline"></div>
+                        <label>显示名称</label>
+                    </div>
+
+                    <div class="input_data">
+                        <input id="input_device_brand" type="text" required/>
+                        <div class="underline"></div>
+                        <label>设备品牌</label>
+                    </div>
+                </div>
+    
+                <div class="column">
+                    <div class="input_data">
+                        <input id="input_width" type="text" value="0" required/>
+                        <div class="underline"></div>
+                        <label>宽度</label>
+                    </div>
+
+                    <div class="input_data">
+                        <input id="input_height" type="text" value="0" required/>
+                        <div class="underline"></div>
+                        <label>高度</label>
+                    </div>
+                    
+                    <div class="input_data">
+                        <input id="input_range" class="scale_range" type="range" value="50" min="0" max="100" required/>
+                        <label>大小</label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="column">
+                <div class="image_area" ondrop="drop_image(event)">
+                    <img id="show_image" class="image"/>
+                </div>
+            </div>
+
+            <div class="canvas_center hidden">
+                <div id="canvas" class="canvas"></div>
+            </div>
+
+            <div class="button_container">
+                <div class="button" onclick="importJson()">
+                    <div class="icon">
+                        <img src="./icon/Import.png"/>
+                    </div>
+                    <span>导入</span>
+                </div>
+
+                <div class="button" onclick="reset()">
+                    <div class="icon">
+                        <img src="./icon/Reset.png"/>
+                    </div>
+                    <span>重置</span>
+                </div>
+
+                <div class="button" onclick="exportJson()">
+                    <div class="icon">
+                        <img src="./icon/Export.png"/>
+                    </div>
+                    <span>导出</span>
+                </div>
+
+                <div class="button" onclick="online()">
+                    <div class="icon">
+                        <img src="./icon/Github.png"/>
+                    </div>
+                    <span>去在线版</span>
+                </div>
+
+                <div class="button" onclick="donate()">
+                    <div class="icon">
+                        <img src="./icon/donate.png"/>
+                    </div>
+                    <span>赞助</span>
+                </div>
+            </div>
+        </div>
+    </body>
+
+    <script src="./index.js"></script>
+</html>
