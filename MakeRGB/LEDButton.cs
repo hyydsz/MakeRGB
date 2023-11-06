@@ -132,7 +132,7 @@ namespace MakeRGB
                     return;
                 }
 
-                MainWindow.led_positions.Remove(led_pos);
+                MainWindow.led_positions.RemoveAt(led_pos.index);
                 MainWindow.ActionUpdateLedCount();
 
                 led_pos.index = -1;

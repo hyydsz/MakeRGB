@@ -412,10 +412,6 @@ function online() {
     location.assign("https://hyydsz.github.io/MakeRGB/");
 }
 
-function donate() {
-    window.open("./icon/weixin.png");
-}
-
 onload = () => {
     updateCanvas();
 }

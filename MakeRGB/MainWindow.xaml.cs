@@ -110,18 +110,17 @@ namespace MakeRGB
 
                     if (led_list != null)
                     {
-                        var led = led_list.FirstOrDefault(item => item.x == x && item.y == y);
-                        if (led != default(LED_Pos))
+                        int index = led_list.FindIndex(item => item.x == x && item.y == y);
+                        if (index != -1)
                         {
-                            // 创建一个复制
+                            var led = led_list[index];
+
                             LED_Pos led_copy = led;
                             led_copy.button = LED_Button;
 
-                            // 将按钮实例传入
-                            led_positions.Add(led_copy);
-
-                            // 将按钮设置为按下
                             LED_Button.SetButton(led.index);
+
+                            led_positions.Add(led_copy);
                         }
                     }
 
@@ -402,6 +401,13 @@ namespace MakeRGB
                         LED_Pos pos = new LED_Pos();
                         pos.x = (int)jToken[0];
                         pos.y = (int)jToken[1];
+
+                        if (leds.FindIndex(item => item.x == pos.x && item.y == pos.y) != -1)
+                        {
+                            MessageBox.Show($"在模型文件中找到重复的灯珠位置\r已自动修复 位置: {leds.Count}\r暂不支持单个位置多个灯珠", "警告", MessageBoxButton.OK, MessageBoxImage.Error);
+                            continue;
+                        }
+
                         pos.index = leds.Count;
 
                         leds.Add(pos);
@@ -489,14 +495,6 @@ namespace MakeRGB
         private void Hyperlink_RequestNavigate(object sender, System.Windows.Navigation.RequestNavigateEventArgs e)
         {
             Hyperlink hyperlink = sender as Hyperlink;
-            if (hyperlink.NavigateUri.ToString() == "donate")
-            {
-                donate donate = new donate();
-                donate.Show();
-
-                return;
-            }
-
             Process.Start(new ProcessStartInfo(hyperlink.NavigateUri.AbsoluteUri)
             {
                 UseShellExecute = true
@@ -511,7 +509,8 @@ namespace MakeRGB
                 return;
             }
 
-            if (savedList.FirstOrDefault(item => item.DisplayName == Display_Name.Text) == default(Saved))
+            int index = savedList.FindIndex(item => item.DisplayName == Display_Name.Text);
+            if (index == -1 || index == SaveBox.SelectedIndex)
             {
                 Saved saved = new Saved();
                 saved.DeviceName = Product_Name.Text;
@@ -526,12 +525,18 @@ namespace MakeRGB
                 saved.led_positions = new List<LED_Pos>();
                 led_positions.ForEach(item => saved.led_positions.Add(item));
 
-                ComboBoxItem list = new ComboBoxItem();
-                list.Content = saved.DisplayName;
+                if (index == SaveBox.SelectedIndex && SaveBox.SelectedIndex != -1)
+                {
+                    savedList[index] = saved;
+                }
+                else
+                {
+                    ComboBoxItem list = new ComboBoxItem();
+                    list.Content = saved.DisplayName;
 
-                SaveBox.Items.Add(list);
-
-                savedList.Add(saved);
+                    SaveBox.Items.Add(list);
+                    savedList.Add(saved);
+                }
 
                 MessageBox.Show("保存完成", "完成", MessageBoxButton.OK, MessageBoxImage.Information);
             }
@@ -548,6 +553,8 @@ namespace MakeRGB
 
             savedList.RemoveAt(SaveBox.SelectedIndex);
             SaveBox.Items.RemoveAt(SaveBox.SelectedIndex);
+
+            MessageBox.Show("删除成功", "完成", MessageBoxButton.OK, MessageBoxImage.Information);
         }
 
         private void SaveBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
