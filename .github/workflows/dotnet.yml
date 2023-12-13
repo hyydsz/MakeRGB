@@ -21,14 +21,14 @@ jobs:
       with:
         dotnet-version: 6.x
 
-    - name: Install dependencies
-      run: nuget restore MakeRGB.sln
+    - name: Into File
+      run: cd MakeRGB
 
-    - name: Install dependencies 2
-      run: dotnet restore MakeRGB.sln
+    - name: Install dependencies
+      run: nuget restore
       
     - name: Build
-      run: dotnet build -c release MakeRGB.sln
+      run: dotnet build -c release
       
     - name: Upload
       uses: actions/upload-artifact@master
